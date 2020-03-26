@@ -19,7 +19,8 @@ type Nested struct {
 }
 
 type SubNested struct {
-	Value string `url:"value"`
+	Value    string `url:"value"`
+	DotValue string `url:"dot_value,dot"`
 }
 
 func TestValues_types(t *testing.T) {
@@ -135,13 +136,15 @@ func TestValues_types(t *testing.T) {
 			}{
 				Nested{
 					A: SubNested{
-						Value: "that",
+						Value:    "that",
+						DotValue: "this",
 					},
 				},
 			},
 			url.Values{
-				"nest[a][value]": {"that"},
-				"nest[b]":        {""},
+				"nest[a][value]":    {"that"},
+				"nest[a].dot_value": {"this"},
+				"nest[b]":           {""},
 			},
 		},
 		{
@@ -150,14 +153,17 @@ func TestValues_types(t *testing.T) {
 			}{
 				Nested{
 					Ptr: &SubNested{
-						Value: "that",
+						Value:    "that",
+						DotValue: "this",
 					},
 				},
 			},
 			url.Values{
-				"nest[a][value]":   {""},
-				"nest[b]":          {""},
-				"nest[ptr][value]": {"that"},
+				"nest[a][value]":      {""},
+				"nest[a].dot_value":   {""},
+				"nest[b]":             {""},
+				"nest[ptr][value]":    {"that"},
+				"nest[ptr].dot_value": {"this"},
 			},
 		},
 		{

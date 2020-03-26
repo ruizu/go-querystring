@@ -162,7 +162,11 @@ func reflectValue(values url.Values, val reflect.Value, scope string) error {
 		}
 
 		if scope != "" {
-			name = scope + "[" + name + "]"
+			if opts.Contains("dot") {
+				name = scope + "." + name
+			} else {
+				name = scope + "[" + name + "]"
+			}
 		}
 
 		if opts.Contains("omitempty") && isEmptyValue(sv) {
